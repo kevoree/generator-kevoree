@@ -1,0 +1,45 @@
+{
+  "name": "generator-kevoree",
+  "version": "2.3.0",
+  "description": "A Kevoree project generator for Yeoman",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "Maxime Tricoire <max.tricoire@gmail.com> (https://github.com/maxleiko)",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "underscore.string": "~2.3.1",
+    "yeoman-generator": "~0.13.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0-rc.1"
+  },
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.2.10"
+  },
+  "licenses": [
+    {
+      "type": "LGPL3.0"
+    }
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kevoree/generator-kevoree.git"
+  },
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/kevoree/generator-kevoree/issues"
+  },
+  "homepage": "https://github.com/kevoree/generator-kevoree"
+}
