@@ -31,7 +31,6 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                banner: '// Browserify bundle of <%= pkg.name %>@<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd HH:MM") %>\n',
                 mangle: {
                     except: ['_super']
                 }
