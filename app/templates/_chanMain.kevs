@@ -3,16 +3,14 @@
 // KevScript documentation http://kevoree.org/doc/#kevoree-script-aka-kevscript
 add node0 : JavascriptNode
 add sync : WSGroup
-add node0.console : FakeConsole
-add node0.hello : HelloWorldComponent
+add node0.ticker : Ticker
+add node0.printer : ConsolePrinter
 add myChan : <%= fqn %>
 
 attach node0 sync
 
-set sync.port/node0 = "9000"
-
-bind node0.console.inMsg myChan
-bind node0.hello.sendText myChan
+bind node0.ticker.tick myChan
+bind node0.printer.input myChan
 
 // you will probably need to set something fragmentDependant like this:
 // chan example: https://github.com/kevoree/kevoree-js/blob/master/library/kevoree-chan-websocket/lib/WebSocketChannel.js

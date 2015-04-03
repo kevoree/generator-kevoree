@@ -112,16 +112,20 @@ KevoreeGenerator.prototype.app = function app() {
     this.mkdir('kevs');
 
     if (this.browserCompat) {
-        this.copy('browserGruntfile.js', 'Gruntfile.js');
         if (this.browserUI) {
+            this.copy('browserGruntfileWithUI.js', 'Gruntfile.js');
             this.template('_ui.html', 'browser/'+this.moduleName+'.html');
+            this.template('_'+this.rawEntityType+'WithUIMain.kevs', 'kevs/main.kevs');
+        } else {
+            this.copy('browserGruntfile.js', 'Gruntfile.js');
+            this.template('_'+this.rawEntityType+'Main.kevs', 'kevs/main.kevs');
         }
     } else {
         this.copy('defaultGruntfile.js', 'Gruntfile.js');
+        this.template('_'+this.rawEntityType+'Main.kevs', 'kevs/main.kevs');
     }
 
     this.template('entities/_'+this.entityType+'.ejs', 'lib/'+this.entityName+'.js');
-    this.template('_'+this.rawEntityType+'Main.kevs', 'kevs/main.kevs');
 };
 
 function matcher(input, pattern) {

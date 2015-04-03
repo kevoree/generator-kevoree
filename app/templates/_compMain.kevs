@@ -6,5 +6,3 @@ add sync : WSGroup
 add node0.myComp : <%= fqn %>
 
 attach node0 sync
-
-set sync.port/node0 = "9000"
