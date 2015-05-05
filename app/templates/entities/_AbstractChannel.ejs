@@ -1,7 +1,3 @@
-// if you have already created your own Channel extending AbstractChannel
-// you can replace AbstractChannel here and use your own
-// ex: var MyChan = require('./path/to/MyChan')
-// the only thing needed is that the top level channel extends AbstractChannel :)
 var AbstractChannel = require('kevoree-entities').AbstractChannel;
 
 /**
@@ -41,11 +37,11 @@ var <%= entityName %> = <%= entityType %>.extend({
     * @param fromPortPath port that sends the message
     * @param destPortPaths port paths of connected input port that should receive the message
     * @param msg
+    * @param callback
     */
-    onSend: function (fromPortPath, destPortPaths, msg) {
-        this._super();
-        // TODO
+    onSend: function (fromPortPath, destPortPaths, msg, callback) {
         this.log.debug(this.toString(), 'TODO send message to all destPort');
+        // TODO
     }
 });
 

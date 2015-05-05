@@ -32,3 +32,6 @@ node_modules
 
 # Kevoree JS
 kevlib.json
+<% if (browserCompat) {%>
+browser/*.js
+<%}%>

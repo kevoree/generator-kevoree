@@ -1,7 +1,3 @@
-// if you have already created your own Component extending AbstractComponent
-// you can replace AbstractComponent here and use your own
-// ex: var MyComp = require('./path/to/MyComp')
-// the only thing needed is that the top level component extends AbstractComponent :)
 var AbstractComponent = require('kevoree-entities').AbstractComponent;
 
 /**
@@ -15,14 +11,20 @@ var <%= entityName %> = <%= entityType %>.extend({
     //dic_yourAttrName: {
     //  optional: true,
     //  defaultValue: false
-    //},
+    //},<%if (browserCompat) {%>
+
+    construct: function () {
+        this.onStart = function () { /* noop */ };
+        this.onStop  = function () { /* noop */ };
+    },<%}%>
 
     /**
      * this method will be called by the Kevoree platform when your component has to start
      * @param {Function} done
      */
     start: function (done) {
-        this.log.debug(this.toString(), 'START');
+        this.log.debug(this.toString(), 'START');<% if (browserCompat) {%>
+        this.onStart();<%}%>
         done();
     },
 
@@ -31,7 +33,8 @@ var <%= entityName %> = <%= entityType %>.extend({
      * @param {Function} done
      */
     stop: function (done) {
-        this.log.debug(this.toString(), 'STOP');
+        this.log.debug(this.toString(), 'STOP');<% if (browserCompat) {%>
+        this.onStop();<%}%>
         done();
     }<% if (browserCompat) {%>,
 
@@ -40,11 +43,27 @@ var <%= entityName %> = <%= entityType %>.extend({
      * this component AngularJS UI controller
      */
     uiController: function () {
-        var that = this;
-        return ['$scope', function ($scope) {
+        return ['$scope', '$timeout', 'instance', function ($scope, $timeout, instance) {
             // this is your UI controller function
-            // $scope content is available directly within the browser/<%= moduleName %>.html file
-            $scope.name = that.getName();
+            // $scope content is available directly within the browser/kevoree-comp-foocomp.html file
+            $scope.started = instance.started;
+            $scope.foo = 'bar';
+            $scope.value = parseInt(Math.random()*100);
+            $scope.genValue = function () {
+                $scope.value = parseInt(Math.random()*100);
+            };
+
+            instance.onStart = function () {
+                $timeout(function () {
+                    $scope.started = true;
+                });
+            };
+
+            instance.onStop = function () {
+                $timeout(function () {
+                    $scope.started = false;
+                });
+            };
         }];
     }<%}%>
 });

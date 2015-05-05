@@ -63,8 +63,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', 'build');
+    grunt.registerTask('dev', 'build:dev');
     grunt.registerTask('build', ['kevoree_genmodel', 'browser']);
+    grunt.registerTask('build:dev', ['kevoree_genmodel', 'browser:dev']);
     grunt.registerTask('publish', ['kevoree_registry']);
     grunt.registerTask('kev', ['kevoree']);
     grunt.registerTask('browser', ['browserify', 'uglify']);
+    grunt.registerTask('browser:dev', ['browserify']);
 };

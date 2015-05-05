@@ -108,13 +108,14 @@ KevoreeGenerator.prototype.app = function app() {
     this.mkdir('lib');
     this.template('_README.md', 'README.md');
     this.copy('_.npmignore', '.npmignore');
-    this.copy('_.gitignore', '.gitignore');
+    this.template('_.gitignore', '.gitignore');
     this.mkdir('kevs');
 
     if (this.browserCompat) {
         if (this.browserUI) {
             this.copy('browserGruntfileWithUI.js', 'Gruntfile.js');
             this.template('_ui.html', 'browser/'+this.moduleName+'.html');
+            this.copy('ui-config.json', 'browser/ui-config.json');
             this.template('_'+this.rawEntityType+'WithUIMain.kevs', 'kevs/main.kevs');
         } else {
             this.copy('browserGruntfile.js', 'Gruntfile.js');
