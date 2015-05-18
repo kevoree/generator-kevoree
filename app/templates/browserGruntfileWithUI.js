@@ -64,10 +64,24 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', 'build');
     grunt.registerTask('dev', 'build:dev');
-    grunt.registerTask('build', ['kevoree_genmodel', 'browser']);
-    grunt.registerTask('build:dev', ['kevoree_genmodel', 'browser:dev']);
-    grunt.registerTask('publish', ['kevoree_registry']);
-    grunt.registerTask('kev', ['kevoree']);
+    grunt.registerTask('build', 'Build Kevoree module', function () {
+        if (process.env.KEVOREE_RUNTIME !== 'dev') {
+            grunt.tasks([
+                'kevoree_genmodel',
+                'browser'
+            ]);
+        }
+    });
+    grunt.registerTask('build:dev', 'Build Kevoree module for dev', function () {
+        if (process.env.KEVOREE_RUNTIME !== 'dev') {
+            grunt.tasks([
+                'kevoree_genmodel',
+                'browser:dev'
+            ]);
+        }
+    });
+    grunt.registerTask('publish', 'kevoree_registry');
+    grunt.registerTask('kev', 'kevoree');
     grunt.registerTask('browser', ['browserify', 'uglify']);
-    grunt.registerTask('browser:dev', ['browserify']);
+    grunt.registerTask('browser:dev', 'browserify');
 };
