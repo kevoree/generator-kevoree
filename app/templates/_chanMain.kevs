@@ -15,3 +15,5 @@ bind node0.printer.input myChan
 // you will probably need to set something fragmentDependant like this:
 // chan example: https://github.com/kevoree/kevoree-js/blob/master/library/kevoree-chan-websocket/lib/WebSocketChannel.js
 // set myChan.port/node0 = "9001"
+
+set node0.logLevel = 'DEBUG'

@@ -15,3 +15,5 @@ attach node0, browser sync
 set sync.master = 'node0'
 
 network node0.ip.lo 127.0.0.1
+
+set browser.logLevel = 'DEBUG'

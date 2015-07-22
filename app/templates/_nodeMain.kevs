@@ -5,3 +5,5 @@ add node0 : <%= fqn %>
 add sync : WSGroup
 
 attach node0 sync
+
+set node0.logLevel = 'DEBUG'
