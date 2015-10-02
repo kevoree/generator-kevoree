@@ -57,16 +57,7 @@ module.exports = function (grunt) {
             ]);
         }
     });
-    grunt.registerTask('build:dev', 'Build Kevoree module for dev', function () {
-        if (process.env.KEVOREE_RUNTIME !== 'dev') {
-            grunt.tasks([
-                'kevoree_genmodel',
-                'browser:dev'
-            ]);
-        }
-    });
-    grunt.registerTask('publish', 'kevoree_registry');
-    grunt.registerTask('kev', 'kevoree');
-    grunt.registerTask('browser', ['browserify', 'uglify']);
-    grunt.registerTask('browser:dev', 'browserify');
+    grunt.registerTask('publish', ['uglify', 'kevoree_registry']);
+    grunt.registerTask('kev', ['build', 'kevoree']);
+    grunt.registerTask('browser', 'browserify');
 };

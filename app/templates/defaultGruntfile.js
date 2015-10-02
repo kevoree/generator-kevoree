@@ -33,5 +33,5 @@ module.exports = function (grunt) {
         }
     });
     grunt.registerTask('publish', 'kevoree_registry');
-    grunt.registerTask('kev', 'kevoree');
+    grunt.registerTask('kev', ['build', 'kevoree']);
 };
