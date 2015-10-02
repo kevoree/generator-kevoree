@@ -1,8 +1,8 @@
 {
     "name": "<%= moduleName %>",
-    "version": "<%= moduleVersion %>",
+    "version": "<%= tdef.version %>",
     "description": "<%= description %>",
-    "main": "./lib/<%= entityName %>.js",
+    "main": "./lib/<%= tdef.name %>.js",
     "kevoree": {
         "package": "<%= kevoreePackage %>"
     },

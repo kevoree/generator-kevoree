@@ -61,7 +61,7 @@ KevoreeGenerator.prototype.askFor = function askFor() {
         this.prompt([{
             name: 'moduleName',
             message: 'Choose your NPM module name:',
-            default: 'kevoree-' + this.rawEntityType + '-' + _.slugify(this.entityName),
+            default: 'kevoree-' + this.rawEntityType + '-' + _.slugify(this.tdef.name),
             validate: function(answer) {
                 var pattern = /[a-z0-9_-]+/;
                 if (matcher(answer, pattern)) {
@@ -131,6 +131,9 @@ KevoreeGenerator.prototype.askFor = function askFor() {
         message: 'Would you like to start from an existing TypeDefinition from the Kevoree Registry?',
         default: false
     }], function(props) {
+        var factory = new kevoree.factory.DefaultKevoreeFactory();
+        this.tdef = factory.createTypeDefinition();
+
         if (props.startFromExistingType) {
             this.prompt([{
                 name: 'fqn',
@@ -160,7 +163,7 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                             .map(function(tdef) {
                                 return tdef.version;
                             }).sort(function (a, b) {
-                                if      (semver.gt(a, b)) { return -1;  }
+                                if      (semver.gt(a, b)) { return -1; }
                                 else if (semver.lt(a, b)) { return 1; }
                                 else                      { return 0;  }
                             });
@@ -171,12 +174,12 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                             choices: versions
                         }], function(props) {
                             var path = fqnToPath(fqn+'/'+props.version);
-                            var tdef = model.findByPath(path);
+                            this.tdef = model.findByPath(path);
                             var pkg = fqn.split('.');
                             pkg.pop();
                             pkg = pkg.join('.');
                             this.rawEntityType = (function () {
-                                switch (tdef.metaClassName()) {
+                                switch (this.tdef.metaClassName()) {
                                     case 'org.kevoree.ComponentType':
                                         return 'comp';
                                     case 'org.kevoree.ChannelType':
@@ -186,11 +189,10 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                                     case 'org.kevoree.NodeType':
                                         return 'node';
                                 }
-                            })();
+                            }.bind(this))();
                             this.kevoreePackage = pkg;
-                            this.entityName = tdef.name;
                             this.fqn = fqn;
-                            this.moduleVersion = tdef.version;
+                            this.moduleVersion = this.tdef.version;
 
                             endPrompt();
                         }.bind(this));
@@ -201,7 +203,7 @@ KevoreeGenerator.prototype.askFor = function askFor() {
             this.prompt(prompts, function(props) {
                 this.rawEntityType = ENTITY_TYPE_TAGS[props.entityType];
                 this.kevoreePackage = props.kevoreePackage;
-                this.entityName = props.entityName;
+                this.tdef.name = props.entityName;
                 if (this.kevoreePackage !== 'org.kevoree.library') {
                     this.fqn = this.kevoreePackage + '.' + props.entityName;
                 }
@@ -213,11 +215,10 @@ KevoreeGenerator.prototype.askFor = function askFor() {
 };
 
 KevoreeGenerator.prototype.app = function app() {
-    if (!this.moduleVersion) {
-        this.moduleVersion = '1.0.0';
+    if (!this.tdef.version) {
+        this.tdef.version = '1.0.0';
     }
     this.entityType = ENTITY_REAL_TYPES[this.rawEntityType];
-    this.fqn = this.entityName;
 
     // common files & dirs for all entities
     this.template('_package.json', 'package.json');
@@ -242,5 +243,5 @@ KevoreeGenerator.prototype.app = function app() {
         this.template('_' + this.rawEntityType + 'Main.kevs', 'kevs/main.kevs');
     }
 
-    this.template('entities/_' + this.entityType + '.js', 'lib/' + this.entityName + '.js');
+    this.template('entities/_' + this.entityType + '.js', 'lib/' + this.tdef.name + '.js');
 };

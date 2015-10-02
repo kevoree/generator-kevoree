@@ -2,16 +2,44 @@ var AbstractComponent = require('kevoree-entities').AbstractComponent;
 
 /**
  * Kevoree component
- * @type {<%= entityName %>}
+ * @type {<%= tdef.name %>}
  */
-var <%= entityName %> = <%= entityType %>.extend({
-    toString: '<%= entityName %>',
+var <%= tdef.name %> = <%= entityType %>.extend({
+    toString: '<%= tdef.name %>',
 
     /* This is an example of dictionary attribute that you can set for your entity */
-    //dic_yourAttrName: {
-    //  optional: true,
-    //  defaultValue: false
-    //},<%if (browserCompat) {%>
+    dic_yourAttrName: {
+        optional: false,
+        defaultValue: 'someValue'
+    },<%
+    if (tdef.dictionaryType) {
+        // for loop
+        for (var i=0; i < tdef.dictionaryType.attributes.array.length; i++) {
+            // get attribute type
+            var attr = tdef.dictionaryType.attributes.array[i]; %>
+    dic_<%= attr.name %>: {
+        optional: <%= attr.optional %>,<%
+            // check if attribute defaultValue is set
+            // if it is, then generate the appropriate javascript code
+            if (attr.defaultValue.length) {
+                // if attribute type is "STRING" then we need to wrap it into quotes
+                if (attr.datatype === 'STRING') {%>
+        <%= 'defaultValue: \''+attr.defaultValue+'\',' %><%
+                // if it is not a "STRING" then we just need to print the value
+                } else {%>
+        <%= 'defaultValue: '+attr.defaultValue+',' %><%
+                }
+                // otherwise do not generate anything related to defaultValue
+            } else {%>
+        datatype: '<%= attr.datatype %>'<%
+            }%>
+    },<%
+        // end for loop
+        }
+    // end if
+    }
+    // check browser compatibility and generate code accordingly
+    if (browserCompat) {%>
 
     construct: function () {
         this.onStart = function () { /* noop */ };
@@ -36,7 +64,22 @@ var <%= entityName %> = <%= entityType %>.extend({
         this.log.debug(this.toString(), 'STOP');<% if (browserCompat) {%>
         this.onStop();<%}%>
         done();
-    }<% if (browserCompat) {%>,
+    }<%= (browserCompat || tdef.required.array.length || tdef.provided.array.length) ? ',':'' %>
+    <%
+    // add provided ports
+    for (var p=0; p < tdef.provided.array.length; p++) {
+        var input = tdef.provided.array[p];%>
+    in_<%= input.name %>: function (msg) {
+        // TODO do something with incoming message
+    }<%= (p < tdef.provided.array.length - 1 || browserCompat || tdef.required.array.length) ? ',' : '' %><%
+    // end for loop
+    }
+    for (var q=0; q < tdef.required.array.length; q++) {
+        var output = tdef.required.array[q];%>
+    out_<%= output.name %>: function (msg) { /* noop */ }<%= (p < tdef.required.array.length - 1 || browserCompat)? ',':'' %><%
+        // end for loop
+    }
+    if (browserCompat) { %>
 
     /**
      * this method is called by the Browser Runtime in order to retrieve
@@ -65,7 +108,8 @@ var <%= entityName %> = <%= entityType %>.extend({
                 });
             };
         }];
-    }<%}%>
+    }<%
+    }%>
 });
 
-module.exports = <%= entityName %>;
+module.exports = <%= tdef.name %>;

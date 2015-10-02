@@ -7,3 +7,4 @@ add sync : WSGroup
 attach node0 sync
 
 set node0.logLevel = 'DEBUG'
+set node0.yourAttrName = 'nonDefaultValue'
