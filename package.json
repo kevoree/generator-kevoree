@@ -1,6 +1,6 @@
 {
   "name": "generator-kevoree",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "A Kevoree project generator for Yeoman",
   "keywords": [
     "yeoman-generator"
@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "chalk": "^0.5.1",
+    "kevoree-library": "^5.0.9",
+    "kevoree-registry-client": "^2.2.2",
+    "semver": "^5.0.3",
     "underscore.string": "~2.3.1",
     "yeoman-generator": "~0.13.0"
   },
