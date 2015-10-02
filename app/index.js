@@ -175,6 +175,9 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                         }], function(props) {
                             var path = fqnToPath(fqn+'/'+props.version);
                             this.tdef = model.findByPath(path);
+                            if (!this.tdef.dictionaryType) {
+                                this.tdef.dictionaryType = factory.createDictionaryType();
+                            }
                             var pkg = fqn.split('.');
                             pkg.pop();
                             pkg = pkg.join('.');
@@ -215,9 +218,20 @@ KevoreeGenerator.prototype.askFor = function askFor() {
 };
 
 KevoreeGenerator.prototype.app = function app() {
+    var factory = new kevoree.factory.DefaultKevoreeFactory();
     if (!this.tdef.version) {
         this.tdef.version = '1.0.0';
     }
+    if (!this.tdef.dictionaryType) {
+        this.tdef.dictionaryType = factory.createDictionaryType();
+        var attr = factory.createDictionaryAttribute();
+        attr.name = 'yourAttrName';
+        attr.optional = false;
+        attr.defaultValue = 'someDefaultValue';
+        this.tdef.dictionaryType.addAttributes(attr);
+    }
+    this.tdef.provided = this.tdef.provided || { array: [] };
+    this.tdef.required = this.tdef.required || { array: [] };
     this.entityType = ENTITY_REAL_TYPES[this.rawEntityType];
 
     // common files & dirs for all entities
