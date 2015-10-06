@@ -227,7 +227,8 @@ KevoreeGenerator.prototype.app = function app() {
         var attr = factory.createDictionaryAttribute();
         attr.name = 'yourAttrName';
         attr.optional = false;
-        attr.defaultValue = 'someDefaultValue';
+        attr.defaultValue = 'aDefaultValue';
+        attr.datatype = 'STRING';
         this.tdef.dictionaryType.addAttributes(attr);
     }
     this.tdef.provided = this.tdef.provided || { array: [] };
