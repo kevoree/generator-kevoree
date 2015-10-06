@@ -209,6 +209,8 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                 this.tdef.name = props.entityName;
                 if (this.kevoreePackage !== 'org.kevoree.library') {
                     this.fqn = this.kevoreePackage + '.' + props.entityName;
+                } else {
+                    this.fqn = props.entityName;
                 }
 
                 endPrompt();
