@@ -67,11 +67,12 @@ module.exports = function (grunt) {
         if (process.env.KEVOREE_RUNTIME !== 'dev') {
             grunt.tasks([
                 'kevoree_genmodel',
+                'uglify',
                 'browser'
             ]);
         }
     });
-    grunt.registerTask('publish', ['uglify', 'kevoree_registry']);
+    grunt.registerTask('publish', 'kevoree_registry');
     grunt.registerTask('kev', ['build', 'kevoree']);
     grunt.registerTask('browser', 'browserify');
 };
