@@ -27,9 +27,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', 'build');
     grunt.registerTask('build', 'Build Kevoree module', function () {
         if (process.env.KEVOREE_RUNTIME !== 'dev') {
-            grunt.tasks([
-                'kevoree_genmodel'
-            ]);
+            grunt.tasks([ 'kevoree_genmodel' ]);
         }
     });
     grunt.registerTask('publish', 'kevoree_registry');

@@ -62,7 +62,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'build:dev');
     grunt.registerTask('build', 'Build Kevoree module', function () {
         if (process.env.KEVOREE_RUNTIME !== 'dev') {
             grunt.tasks([
@@ -71,7 +71,16 @@ module.exports = function (grunt) {
             ]);
         }
     });
-    grunt.registerTask('publish', ['uglify', 'kevoree_registry']);
-    grunt.registerTask('kev', ['build', 'kevoree']);
-    grunt.registerTask('browser', 'browserify');
+    grunt.registerTask('build:dev', 'Build Kevoree module', function () {
+        if (process.env.KEVOREE_RUNTIME !== 'dev') {
+            grunt.tasks([
+                'kevoree_genmodel',
+                'browser:dev'
+            ]);
+        }
+    });
+    grunt.registerTask('publish', 'kevoree_registry');
+    grunt.registerTask('kev', ['build:dev', 'kevoree']);
+    grunt.registerTask('browser', ['browserify', 'uglify']);
+    grunt.registerTask('browser:dev', 'browserify');
 };
