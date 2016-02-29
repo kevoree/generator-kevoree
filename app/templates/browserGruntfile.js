@@ -53,6 +53,7 @@ module.exports = function (grunt) {
         if (process.env.KEVOREE_RUNTIME !== 'dev') {
             grunt.tasks([
                 'kevoree_genmodel',
+                'uglify',
                 'browser'
             ]);
         }

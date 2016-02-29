@@ -155,7 +155,11 @@ KevoreeGenerator.prototype.askFor = function askFor() {
                     fqns: [fqn]
                 }, function(err, modelStr) {
                     if (err) {
-                        throw err;
+                        if((err.message || "").startsWith("Unable to find ")) {
+                            this.log(err.message)
+                        } else {
+                            throw err;
+                        }
                     } else {
                         var fact = new kevoree.factory.DefaultKevoreeFactory();
                         var model = fact.createJSONLoader().loadModelFromString(modelStr).get(0);
